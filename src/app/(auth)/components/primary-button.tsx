@@ -8,17 +8,16 @@ type ButtonProps = {
 
 function PrimaryButton({ variant = "primary", label, onClick }: ButtonProps) {
     return (
-        <div>
+        <div className="w-full flex flex-col items-end mb-10">
             <button
-                className={`w-[500px] my-1 px-4 py-2 font-semibold ${variant === "primary"
-                    ? "bg-[#EF6B4A] text-white hover:bg-[#D95A3C]"
-                    : " text-[#6251DD] bg-white border border-[#6251DD] "
+                className={`w-full px-4 py-2 mb-3 font-semibold rounded-md transition-all duration-300 ${variant === "primary"
+                        ? "bg-[#EF6B4A] text-white hover:bg-[#D95A3C]"
+                        : "text-[#6251DD] bg-white border border-[#6251DD] hover:bg-[#f1f1ff]"
                     }`}
                 onClick={onClick}
             >
                 {label}
             </button>
-
         </div>
 
 
