@@ -1,14 +1,13 @@
 import React from 'react'
-import LoginForm from '../components/login-form'
+import AuthForm from '../components/AuthForm'
 
 
 function page() {
-  return (
-    <div>
-      <LoginForm />
-
-    </div>
-  )
+    return (
+        <div>
+          <AuthForm type="login"/>
+        </div>
+    )
 }
 
 export default page

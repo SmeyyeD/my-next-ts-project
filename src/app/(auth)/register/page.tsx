@@ -4,7 +4,7 @@ import PrimaryButton from '../components/primary-button'
 function page() {
   return (
     <div>
-      <PrimaryButton label='Register' />
+      <PrimaryButton label="Register" />
   
     </div>
   )
