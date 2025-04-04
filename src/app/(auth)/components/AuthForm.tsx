@@ -1,98 +1,114 @@
-"use client";
-import React, { useState } from "react";
-import PrimaryButton from "./primary-button";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
+"use client"
+import React from 'react'
+import { loginSchema, registerSchema } from '../utils/auth-schema';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import PrimaryButton from './primary-button';
 
-type AuthFormProps = {
-  formType: "login" | "register";
+
+
+type Props = { type: "login" | "register"};
+
+const AuthForm = ({ type }: Props) => {
+  const router = useRouter ();
+  const dispatch = useDispatch();
+
+  const authSchema = type === "login" ? loginSchema : registerSchema;
+  type AuthSchema = typeof authSchema extends z.ZodTypeAny ? z.infer<typeof authSchema> : never;
 };
 
-function AuthForm({ type }: Props ) {
-    const router = useRouter()
-    const authSchema = type === "login" ? loginSchema : registerSchema;
-    type AuthSchema = z.infer<typeof loginSchema> | z.infer<typeof registerSchema>;
-}
+const {
+  register,
+  handleSubmit,
+  formState: { errors, isSubmitting },
+} = useForm<AuthSchema>(
+  mode: "onChange"
+  resolver: zodResolver(authSchema),
+});
 
+const onSubmit = async (data: AuthSchema) => {
+  try {
+    const res =
+    type === "login"
+    ? await apiLogin(data)
+    : await apiRegister(data as z.infer<typeof registerSchema>);
 
+    const token =
+    type === "login"
+    ? res.data.action_login.token
+    : res.data.action_register.token;
+
+    dispatch(login(token));
+    setToken(token);
+    Router.push("/");
+  } cath (error) {
+    console.log("Giriş/Kayıt işlemi sırasında bir hata oluştu", error);
+  }
+};
+
+function authform() {
   return (
-    <div className="flex flex-col items-center min-h-screen">
-      <img src="/Logo.png" alt="Logo" className="w-[100px] h-auto mt-8 mb-8" />
-
-      <div className="flex flex-col items-start text-left w-[500px]">
-        <p className="text-lg">
-          {formType === "login" ? "Tekrar hoş geldiniz!" : "Bize katılın!"}
-        </p>
-        <h1 className="text-2xl font-bold">
-          {formType === "login" ? "Hesabınıza giriş yapın" : "Hesap oluşturun"}
-        </h1>
+    <div className='flex flex-col justify-between items-center my-20 h-full w-2/3'>
+      <div>
+        <Image src="/Logo.png" alt="logo" width={120} height={78} />
+      </div>
+      <div className='flex flex-col w-full'>
+      <p className='font-semibold text-2xl'>
+        {type === "login" ? "Welcome back!" : "Join us today!"}
+      </p>
+      <p className='font-bold text-3xl'>
+        { type === "login" ? "Login to your account" : "Create your account"}
+      </p>
       </div>
 
-      <div className="w-full flex flex-col justify-start">
-        {formType === "register" && (
-          <div className="flex flex-col gap-2 w-full mt-4">
-            <label htmlFor="fullName" className="font-semibold">
-              Ad Soyad
-            </label>
-            <input
+      <form onSubmit={handleSubmit(OnSubmit)} className='flex flex-col w-full gap-y-20'>
+        <div className='flex flex-col gap-y-4'>
+          <div className='flex flex-col gap-y-10'>
+            { type === "register" && (
+              <FormInput
               type="text"
-              id="fullName"
-              className="w-full p-2 border border-gray-300 rounded-md"
-              placeholder="Adınızı giriniz"
-              value={fullName}
-              {...register("name",{required:true, minLength:3})}
-              onChange={(e) => setFullName(e.target.value)}
+              label="Name"
+              register={register("name")}
+              error={"name" in errors ? errors.name?.message : undefined}
+              />
+            )}
+            <FormInput
+            type="text"
+            label="E-mail"
+            register={register("email")}
+            error={errors.email?.message}
+            />
+            <FormInput
+            type="password"
+            label="Password"
+            register={register("password")}
+            error={errors.password?.message}
             />
           </div>
-        )}
 
-        <div className="flex flex-col gap-2 w-full mt-4">
-          <label htmlFor="username" className="font-semibold">E-posta</label>
-          <input
-            type="text"
-            id="username"
-            className="w-full p-2 border border-gray-300 rounded-md"
-            placeholder="E-posta adresinizi giriniz"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+          { type === "login" && (
+            <label className="text-[#6251DD] font-bold">
+              <input className="mr-2 accent-[#6251DD]" type="checkbox" />
+              Remember me
+              </label>
+          )}
         </div>
 
-        <div className="flex flex-col w-full mt-4">
-          <label htmlFor="password" className="font-semibold">Şifre</label>
-          <input
-            type="password"
-            id="password"
-            className="w-full p-2 border border-gray-300 rounded-md"
-            placeholder="Şifrenizi giriniz"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+        <div className='flex flex-col gap-y-2'>
+          {type === "login" ? (
+            <>
+            <PrimaryButton disabled={isSubmitting}>Register</PrimaryButton>
+            <PrimaryButton onCLick={() => Router.push("/register")} type="button" variant="secondary">Login
+            </PrimaryButton>
+            </>
+          )};
         </div>
-
-        {formType === "login" && (
-          <div className="flex flex-col justify-center mt-1 mb-5">
-            <label className="text-blue-800">
-              <input type="checkbox" className="mr-2" /> Beni hatırla
-            </label>
-          </div>
-        )}
-      </div>
-
-      {formType === 'login' && (
-        <PrimaryButton label="Giriş Yap" onClick={handleSubmit} type="submit" />
-      )}
-
-      {formType === 'register' && (
-        <PrimaryButton
-          label="Kayıt Ol"
-          onClick={handleSubmit}
-          variant="secondary"
-          type="submit"
-        />
-      )}
+      </form>
     </div>
   );
-}
+};
 
-export default AuthForm
+export default AuthForm;
