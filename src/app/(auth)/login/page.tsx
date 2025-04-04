@@ -3,11 +3,9 @@ import AuthForm from '../components/AuthForm'
 
 
 function page() {
-    return (
-        <div>
-          <AuthForm />
-        </div>
-    )
+    return <AuthForm type="login"/>
+       
+    
 }
 
 export default page

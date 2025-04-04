@@ -1,13 +1,8 @@
 import React from 'react'
-import PrimaryButton from '../components/primary-button'
+import AuthForm from '../components/AuthForm'
 
 function page() {
-  return (
-    <div>
-      <PrimaryButton/>
-  
-    </div>
-  )
+  return <AuthForm type="register"/>
 }
 
 export default page
