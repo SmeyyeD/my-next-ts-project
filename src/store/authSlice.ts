@@ -1,3 +1,4 @@
+'use client'
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type AuthState = {
@@ -6,7 +7,7 @@ type AuthState = {
 }
 
 const initialState: AuthState = {
-    token: null;
+    token: null,
     isAuthenticated: false
 }
 

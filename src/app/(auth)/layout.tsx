@@ -14,7 +14,7 @@ function Layout({ children }: Props) {
         />
       </div>
 
-      <div className="col-start-2 flex justify-center items-center">
+      <div className="col-start-2 flex justify-center items-center h-screen py-10">
         {children}
       </div>
     </div>

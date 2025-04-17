@@ -1,4 +1,5 @@
-bimport React, { ComponentProps } from 'react';
+'use client'
+import React, { ComponentProps } from 'react';
 
 type Props = {
     children: React.ReactNode;
@@ -11,7 +12,14 @@ function PrimaryButton({ children, variant = "primary", ...rest }: Props) {
     const secondaryClasses = "text-white bg-[#EF6B4A]";
     const primaryClasses = "text-[#6251DD] border border-[#6251DD]";
 
-    return <button {...rest} className='{`{baseClasses} ${variant==="primary" || primaryClasses} ${variant==="secondary" || secondaryClasses}`}>{children}</button>;
+    return (
+        <button
+            {...rest}
+            className={`${baseClasses} ${variant === "primary" ? primaryClasses : ""} ${variant === "secondary" ? secondaryClasses : ""}`}
+        >
+            {children}
+        </button>
+    );
 }
 
 export default PrimaryButton;

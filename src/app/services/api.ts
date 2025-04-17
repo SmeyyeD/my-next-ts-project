@@ -1,3 +1,4 @@
+"use client"
 import axios from "axios";
 import { LoginSchema, RegisterSchema } from "../(auth)/utils/auth-schema";
 import { getToken, removeToken } from "../(auth)/utils/authLocalStorage";
@@ -27,6 +28,6 @@ apiInstance.interceptors.response.use(
     }
 );
 
-export const login = (data: LoginSchema) => apiInstance.post("/login", data);
-export const register = (data: RegisterSchema) => apiInstance.post("/register", data);
+export const apiLogin = (data: LoginSchema) => apiInstance.post("/login", data);
+export const apiRegister = (data: RegisterSchema) => apiInstance.post("/register", data);
 export const fetcher = (url: string) => apiInstance.get(url).then((res) => res.data);

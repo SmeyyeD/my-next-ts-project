@@ -1,7 +1,10 @@
+"use client"
+import { loadToken } from '@/store/authSlice'
+import { RootState } from '@/store/store'  
 import { usePathname } from 'next/navigation'
-import { useRouter } from 'next/router'
-import React, { Children, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useRouter } from 'next/navigation'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 const publicRoutes = ["/login", "/register"]
 
@@ -11,7 +14,7 @@ function AuthWrapper({ children }: { children: React.ReactNode }) {
     const pathname = usePathname()
     const dispatch = useDispatch()
 
-    useEffect(() => {
+    /* useEffect(() => {
         dispatch(loadToken())
 
         if (isAuthenticated && publicRoutes.includes(pathname)) {
@@ -22,13 +25,11 @@ function AuthWrapper({ children }: { children: React.ReactNode }) {
         }
     }, [isAuthenticated, pathname, router, dispatch])
 
-    if (!isAuthenticated && !publicRoutes.includes(pathname) && !isAuthenticated) {
+    if (!isAuthenticated && !publicRoutes.includes(pathname)) {
         return null
-    }
+    } */
 
-return (
-    <>{children}</>
-    )
+    return <>{children}</>
 }
 
-export default AuthWrapper
+export default AuthWrapper;
