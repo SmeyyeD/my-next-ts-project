@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
+import CategoryRow from './CategoryRow'
 const response = {
   "category": [
     {
@@ -29,11 +30,12 @@ function CategoryList() {
     <div className='flex flex-col gay-y-16'>
       {response.category?.map((category) => (
         <div key={category.id} className='flex flex-col gap-y-5'>
+
           <div className='flex justify-between h-auto'>
             <p className='text-[#090937] font-bold text-3xl'>{category.name}</p>
             <Link href={`/categories/${category.id}`} className='font-bold text-xl text-[#EF6B4A]'>Viev All</Link>
           </div>
-
+          <CategoryRow/>
         </div>
       ))}
     </div>
